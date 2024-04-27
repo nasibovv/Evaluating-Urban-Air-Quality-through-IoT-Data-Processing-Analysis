@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  mqtt_broker:
+    image: emqx/emqx
+    container_name: mqtt_broker
+    ports:
+      - "1883:1883"   # MQTT broker port
+    volumes:
+      - ./emqx.conf:/etc/emqx.conf
+  data_preprocessor:
+    build: .
+    container_name: data_preprocessor
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - mqtt_broker
